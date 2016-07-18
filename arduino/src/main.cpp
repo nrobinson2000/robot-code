@@ -1,5 +1,7 @@
 #include <Arduino.h>
 #include <Servo.h>
+#include "LiquidCrystal_I2C.h"
+#include <Wire.h>
 
 /*
 Front Motors. Connected to Arduino
@@ -28,7 +30,7 @@ int FLIN2 = 5;
 int FRIN1 = 11;
 int FRIN2 = 10;
 
-int ENABLE_PIN = 19;
+int ENABLE_PIN = 14;
 
 int currentTime = 0;
 
@@ -41,6 +43,16 @@ int pos = 0;
 
 String readString;
 Servo head;
+
+
+LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
+
+void printLcd(String text)
+{
+  lcd.clear();
+  lcd.home();
+  lcd.print(text);
+}
 
 void setup()
 {
@@ -57,8 +69,16 @@ pinMode(ENABLE_PIN, OUTPUT);
 
 digitalWrite(ENABLE_PIN, HIGH);
 
-// head.write(90);
+lcd.begin(16,2);
+lcd.backlight();
+lcd.home();
+lcd.print("Robot by Comp");
+lcd.setCursor(0, 1);
+lcd.print("Sci Major");
 }
+
+
+
 
 
 void parseCommand(String command)
@@ -116,6 +136,11 @@ void parseCommand(String command)
       analogWrite(FRIN1, 0);
       analogWrite(FRIN2, 0);
     }
+  }
+
+  if (command.startsWith("print"))
+  {
+    printLcd(command.substring(6));
   }
   return;
 }

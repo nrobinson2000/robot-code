@@ -33,6 +33,12 @@ int BRIN2 = D3;
 String readString;
 
 
+int printLcd(String text)
+{
+  Serial1.println("print " + text);
+  return 1;
+}
+
 String makeProper(int value)
 {
   String valuedata;
@@ -127,13 +133,21 @@ pinMode(BRIN1, OUTPUT);
 pinMode(BRIN2, OUTPUT);
 
 Particle.function("move", move);
+Particle.function("print", printLcd);
 }
+
+
 
 void parseCommand(String command)
 {
 if (command.startsWith("move"))
 {
   move(command.substring(5));
+}
+
+if (command.startsWith("print"))
+{
+  printLcd(command.substring(6));
 }
 
 }
