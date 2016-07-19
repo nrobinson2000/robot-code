@@ -49,9 +49,13 @@ LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
 
 void printLcd(String text)
 {
+  String text1 = text.substring(0,16);
+  String text2 = text.substring(16);
   lcd.clear();
   lcd.home();
-  lcd.print(text);
+  lcd.print(text1);
+  lcd.setCursor(0,1);
+  lcd.print(text2);
 }
 
 void setup()
